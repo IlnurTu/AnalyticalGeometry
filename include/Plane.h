@@ -38,12 +38,6 @@ public:
     void setD(double d_);
 };
 
-void normalize(Plane &plane);
-
-double getPointDeviation(Point m, const Plane &plane);
-
-bool areOnDifferentSize(Point m, const Plane &plane);
-
 class Vector {
     double x, y, z;
 public:
@@ -61,11 +55,5 @@ public:
 
     void setZ(double z_);
 };
-
-double getDeterminantSquareMatrix(const std::vector<std::vector<double>>& table);
-
-Vector getVectorInNewBasis(const Vector& source, const Vector& l1,const Vector& l2,const Vector& l3);
-
-std::vector<Point> FileReader(const std::string& name);
 
 #endif
