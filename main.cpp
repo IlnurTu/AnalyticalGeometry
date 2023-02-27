@@ -3,7 +3,7 @@
 
 int main() {
     try {
-        std::cout << "Введите название файла" << std::endl;
+        std::cout << "Enter a name of file" << std::endl;
         std::string name;
         std::cin >> name;
 
@@ -12,7 +12,7 @@ int main() {
         Plane plane(Points[0], Points[1], Points[2]);
 
         if(plane.D() == 0){
-            std::cout<<"Плоскость проходит через начало координат";
+            std::cout<<"Origin of coordinate is on plane";
             return 0;
         }
 
@@ -21,7 +21,7 @@ int main() {
         //Если точка лежит на плоскости треугольника, то считается, что ее видно
 
         if (!AreOnDifferentSize) {
-            std::cout << "Видно за треугольником" << std::endl;
+            std::cout << "Visible behind the triangle" << std::endl;
             return 0;
         }
 
@@ -32,11 +32,11 @@ int main() {
 
         if (vectorToCurrentPointInNewBasis.X() >= 0 && vectorToCurrentPointInNewBasis.Y() >= 0 &&
             vectorToCurrentPointInNewBasis.Z() >= 0) {
-            std::cout << "Не видно за треугольником" << std::endl;
+            std::cout << "Not visible behind the triangle" << std::endl;
             return 0;
         }
 
-        std::cout << "Видно за треугольником" << std::endl;
+        std::cout << "Visible behind the triangle" << std::endl;
     }catch (std::exception& e){
         std::cout<<e.what()<<std::endl;
     }
