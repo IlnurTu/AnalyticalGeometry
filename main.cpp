@@ -11,7 +11,14 @@ int main() {
 
         Plane plane(Points[0], Points[1], Points[2]);
 
+        if(plane.D() == 0){
+            std::cout<<"Плоскость проходит через начало координат";
+            return 0;
+        }
+
         bool AreOnDifferentSize = areOnDifferentSize(Points[3], plane);
+
+        //Если точка лежит на плоскости треугольника, то считается, что ее видно
 
         if (!AreOnDifferentSize) {
             std::cout << "Видно за треугольником" << std::endl;

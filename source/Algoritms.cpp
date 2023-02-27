@@ -18,8 +18,7 @@ double getPointDeviation(Point m, const Plane &plane) {
 }
 
 bool areOnDifferentSize(Point m, const Plane &plane) {
-    if (plane.D() == 0)
-        return false;
+
     double PointDeviation = getPointDeviation(m, plane);
 
     if (PointDeviation > 0)
