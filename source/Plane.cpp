@@ -26,23 +26,27 @@ double Plane::D() const {
     return d;
 }
 
-void Plane::setA(double a_) {
+Plane &Plane::A(double a_) {
     a = a_;
+    return *this;
 }
 
-void Plane::setB(double b_) {
+Plane &Plane::B(double b_) {
     b = b_;
+    return *this;
 }
 
-void Plane::setC(double c_) {
+Plane &Plane::C(double c_) {
     c = c_;
+    return *this;
 }
 
-void Plane::setD(double d_) {
+Plane &Plane::D(double d_) {
     d = d_;
+    return *this;
 }
 
-Vector::Vector(Point to, Point from) :x(to.x - from.x), y(to.y - from.y), z(to.z - from.z){};
+Vector::Vector(Point to, Point from) : x(to.x - from.x), y(to.y - from.y), z(to.z - from.z) {};
 
 double Vector::X() const {
     return x;

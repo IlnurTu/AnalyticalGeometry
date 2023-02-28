@@ -1,19 +1,22 @@
 #include "../include/Algoritms.h"
 
 void normalize(Plane &plane) {
-    double k = 1 / sqrt(plane.A() * plane.A() + plane.B() * plane.B() + plane.C() * plane.C());
-    if (plane.D() > 0)
-        k *= -1;
-    plane.setA(plane.A() * k);
-    plane.setB(plane.B() * k);
-    plane.setC(plane.C() * k);
-    plane.setD(plane.D() * k);
+    double sqr_k = std::pow(plane.A(), 2) + std::pow(plane.B(), 2) + std::pow(plane.C(), 2);
+
+    double k = std::pow(sqr_k, -0.5);
+
+    k = plane.D() > 0 ? -k : k;
+
+    plane.A(plane.A() * k).B(plane.B() * k).C(plane.C() * k).D(plane.D() * k);
 };
 
 double getPointDeviation(Point m, const Plane &plane) {
-    Plane NormalizePlane = plane;
+    auto NormalizePlane = plane;
+
     normalize(NormalizePlane);
+
     double ans = m.x * NormalizePlane.A() + m.y * NormalizePlane.B() + m.z * NormalizePlane.C() + NormalizePlane.D();
+
     return ans;
 }
 
@@ -21,58 +24,39 @@ bool areOnDifferentSize(Point m, const Plane &plane) {
 
     double PointDeviation = getPointDeviation(m, plane);
 
-    if (PointDeviation > 0)
-        return true;
+    return PointDeviation > 0 ? true : false;
 
-    return false;
 }
 
-double getDeterminantSquareMatrix(const std::vector<std::vector<double>> &table) {
-    double ans = table[0][0] * table[1][1] * table[2][2] - table[0][2] * table[1][1] * table[2][0] +
-                 table[1][0] * table[2][1] * table[0][2] +
-                 table[0][1] * table[1][2] * table[2][0] - table[0][0] * table[2][1] * table[1][2] -
-                 table[0][1] * table[1][0] * table[2][2];
+double getDeterminantSquareMatrix(const SquareMatrix<3> &table) {
+    double ans = table.getElem(0, 0) * table.getElem(1, 1) * table.getElem(2, 2) -
+                 table.getElem(0, 2) * table.getElem(1, 1) * table.getElem(2, 0) +
+                 table.getElem(1, 0) * table.getElem(2, 1) * table.getElem(0, 2) +
+                 table.getElem(0, 1) * table.getElem(1, 2) * table.getElem(2, 0) -
+                 table.getElem(0, 0) * table.getElem(2, 1) * table.getElem(1, 2) -
+                 table.getElem(0, 1) * table.getElem(1, 0) * table.getElem(2, 2);
 
     return ans;
 }
 
 Vector getVectorInNewBasis(const Vector &source, const Vector &l1, const Vector &l2, const Vector &l3) {
     Vector ans = source;
-    std::vector<std::vector<double>> Matrix;
-    for (int i = 0; i < 3; ++i) {
-        Matrix.emplace_back(std::vector<double>());
-    }
-    Matrix[0].push_back(l1.X());
-    Matrix[0].push_back(l2.X());
-    Matrix[0].push_back(l3.X());
 
-    Matrix[1].push_back(l1.Y());
-    Matrix[1].push_back(l2.Y());
-    Matrix[1].push_back(l3.Y());
-
-    Matrix[2].push_back(l1.Z());
-    Matrix[2].push_back(l2.Z());
-    Matrix[2].push_back(l3.Z());
+    SquareMatrix<3> Matrix = {l1.X(), l2.X(), l3.X(), l1.Y(), l2.Y(), l3.Y(), l1.Z(), l2.Z(), l3.Z()};
 
     double det = getDeterminantSquareMatrix(Matrix);
     if (det == 0) throw std::runtime_error("det is equal 0");
 
     auto Matrix1 = Matrix;
-    Matrix1[0][0] = source.X();
-    Matrix1[1][0] = source.Y();
-    Matrix1[2][0] = source.Z();
+    Matrix1.changeColumn(0,{source.X(), source.Y(),source.Z()});
     double det1 = getDeterminantSquareMatrix(Matrix1);
 
     auto Matrix2 = Matrix;
-    Matrix2[0][1] = source.X();
-    Matrix2[1][1] = source.Y();
-    Matrix2[2][1] = source.Z();
+    Matrix2.changeColumn(1,{source.X(), source.Y(),source.Z()});
     double det2 = getDeterminantSquareMatrix(Matrix2);
 
     auto Matrix3 = Matrix;
-    Matrix3[0][2] = source.X();
-    Matrix3[1][2] = source.Y();
-    Matrix3[2][2] = source.Z();
+    Matrix3.changeColumn(2,{source.X(), source.Y(),source.Z()});
     double det3 = getDeterminantSquareMatrix(Matrix3);
 
     ans.setX(det1 / det);

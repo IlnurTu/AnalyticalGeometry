@@ -4,7 +4,7 @@
 #define GEO_PLANE_H
 #include <exception>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <vector>
 #include <fstream>
 
@@ -29,13 +29,13 @@ public:
 
     double D() const;
 
-    void setA(double a_);
+    Plane& A(double a_);
 
-    void setB(double b_);
+    Plane& B(double b_);
 
-    void setC(double c_);
+    Plane& C(double c_);
 
-    void setD(double d_);
+    Plane& D(double d_);
 };
 
 class Vector {

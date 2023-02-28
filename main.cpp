@@ -3,11 +3,12 @@
 
 int main() {
     try {
-        std::cout << "Enter a name of file" << std::endl;
+        std::cout << "Enter a path to file" << std::endl;
         std::string name;
         std::cin >> name;
 
-        auto Points = FileReader(name);
+        auto inf = openFile(name);
+        auto Points = FileReader(inf);
 
         Plane plane(Points[0], Points[1], Points[2]);
 
